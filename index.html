@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Van Der Linde — Login Member</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #0a0a0a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #e0e0e0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(139,0,0,0.15), transparent 60%);
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      background: #111111;
+      border: 1px solid #333;
+      border-top: 3px solid #c0a062;
+      border-radius: 16px;
+      padding: 30px 36px 40px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+
+    .brand { text-align: center; margin-bottom: 6px; }
+
+    /* Bingkai Logo */
+    .logo-wrapper {
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #c0a062;
+      box-shadow: 0 0 25px rgba(192,160,98,0.3);
+      background: #000;
+    }
+
+    .logo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand h1 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 28px;
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: #c0a062;
+      text-transform: uppercase;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 16px 0 30px;
+    }
+    .divider span { height: 1px; width: 60px; background: #333; }
+    .divider i {
+      width: 6px; height: 6px;
+      background: #c0a062;
+      transform: rotate(45deg);
+      display: inline-block;
+    }
+
+    .field { margin-bottom: 20px; }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      color: #aaa;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 13px 15px;
+      font-size: 15px;
+      border: 1px solid #333;
+      border-radius: 8px;
+      background: #1a1a1a;
+      color: #fff;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .field input::placeholder { color: #555; }
+
+    .field input:focus {
+      border-color: #c0a062;
+      background: #222;
+      box-shadow: 0 0 0 3px rgba(192,160,98,0.15);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #c0a062;
+      color: #111;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+    }
+
+    .btn:hover {
+      background: #d4b578;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(192,160,98,0.3);
+    }
+
+    .btn:active { transform: translateY(0); }
+
+    .footer {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 12px;
+      color: #777;
+      letter-spacing: 0.5px;
+    }
+
+    .footer a { color: #c0a062; text-decoration: none; font-weight: 600; }
+    .footer a:hover { text-decoration: underline; }
+
+    .error {
+      color: #ff4d4d;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 14px;
+      min-height: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="brand">
+      
+      <!-- Logo diambil langsung dari link Discord kamu -->
+      <div class="logo-wrapper">
+        <img src="https://cdn.discordapp.com/attachments/1567812798589960213/1574938702248022077/logo.jpg?ex=6b077777&is=6b0625f7&hm=f932c200b4b3fed578c80ff889aa7849e4b21f72ccc29e72e099130bc080fe8c&" alt="Van Der Linde Logo" />
+      </div>
+      
+      <h1>Van Der Linde</h1>
+    </div>
+    <div class="divider"><span></span><i></i><span></span></div>
+
+    <form id="loginForm">
+      <div class="field">
+        <label for="nick">Masukkan Nick akun member kamu</label>
+        <input type="text" id="nick" name="nick" placeholder="Nick kamu..." required />
+      </div>
+
+      <div class="field">
+        <label for="pass">Masukkan password akun member kamu</label>
+        <input type="password" id="pass" name="pass" placeholder="Password kamu..." required />
+      </div>
+
+      <button type="submit" class="btn">Masuk</button>
+      <div class="error" id="errorMsg"></div>
+    </form>
+
+    <div class="footer">
+      Belum punya akun? <a href="#">Daftar di sini</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const nick = document.getElementById('nick').value.trim();
+      const pass = document.getElementById('pass').value.trim();
+
+      if (nick.length < 3) {
+        errorMsg.textContent = 'Nick minimal 3 karakter.';
+        return;
+      }
+      if (pass.length < 4) {
+        errorMsg.textContent = 'Password minimal 4 karakter.';
+        return;
+      }
+
+      errorMsg.textContent = '';
+      alert('Login berhasil!\nSelamat datang di Van Der Linde, ' + nick + '!');
+    });
+  </script>
+
+</body>
+</html>
